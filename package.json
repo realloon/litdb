@@ -1,0 +1,14 @@
+{
+  "name": "litdb",
+  "version": "0.1.0",
+  "main": "litdb.js",
+  "author": "realloon",
+  "license": "MIT",
+  "scripts": {
+    "build": "rollup ./src/index.js --file litdb.js"
+  },
+  "type": "module",
+  "dependencies": {
+    "rollup": "^3.26.3"
+  }
+}

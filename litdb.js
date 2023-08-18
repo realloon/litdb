@@ -1,23 +1,23 @@
 function processDocument(document) {
   if (document.id === undefined) {
-    document.id = crypto.randomUUID()
+    document.id = crypto.randomUUID();
   }
-
-  this.collection.push(document)
+  
+  this.collection.push(document);
 }
 
 class Collection {
   constructor(name, database, saveDataBase) {
-    this.name = name
-    this.database = database
-    this.saveDataBase = saveDataBase
-    this.collection = this.database[this.name] || []
+    this.name = name;
+    this.database = database;
+    this.saveDataBase = saveDataBase;
+    this.collection = this.database[this.name] || [];
   }
 
   add(documents) {
-    const docs = Array.isArray(documents) ? documents : [documents]
-    docs.forEach(doc => processDocument.call(this, doc))
-    this.saveDataBase()
+    const docs = Array.isArray(documents) ? documents : [documents];
+    docs.forEach(doc => processDocument.call(this, doc));
+    this.saveDataBase();
     return documents
   }
 
@@ -34,8 +34,8 @@ class Collection {
   }
 
   delete(query) {
-    this.database[this.name] = this.filter(query, 'exclude') // 没有修改原数组
-    this.saveDataBase()
+    this.database[this.name] = this.filter(query, 'exclude'); // 没有修改原数组
+    this.saveDataBase();
 
     return this.database[this.name]
   }
@@ -45,21 +45,21 @@ class Collection {
       console.warn(
         'Ensure that there are no items with a value of undefined in the incoming modification object, otherwise it will delete the original field instead of modifying it.',
         modify
-      )
+      );
     }
 
     this.filter(query, 'extract').forEach(document =>
       Object.assign(document, modify)
-    )
+    );
 
-    this.saveDataBase()
+    this.saveDataBase();
 
     return this.filter(query)
   }
 
   clear() {
-    this.database[this.name] = []
-    this.saveDataBase()
+    this.database[this.name] = [];
+    this.saveDataBase();
     return this.database[this.name]
   }
 }
@@ -69,27 +69,27 @@ class Litdb {
   static db
 
   constructor() {
-    this.initDataBase()
+    this.initDataBase();
   }
 
   initDataBase() {
     Litdb.db =
-      JSON.parse(localStorage.getItem(Litdb.dbName)) || Object.create(null)
+      JSON.parse(localStorage.getItem(Litdb.dbName)) || Object.create(null);
   }
 
   saveDataBase() {
-    localStorage.setItem(Litdb.dbName, JSON.stringify(Litdb.db))
+    localStorage.setItem(Litdb.dbName, JSON.stringify(Litdb.db));
   }
 
   collection = collectionName => {
     const instance = new Collection(collectionName, Litdb.db, () =>
       this.saveDataBase(Litdb.dbName)
-    )
+    );
 
-    Litdb.db[collectionName] = instance.collection
+    Litdb.db[collectionName] = instance.collection;
 
     return instance
   }
 }
 
-export { Litdb as default }
+export { Litdb as default };
